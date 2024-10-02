@@ -17,6 +17,43 @@ Questions or patches can be submitted to minoca-dev@googlegroups.com. Good luck!
 
 ### Easy
  - Fix a "TODO" in the code
+#include <stdio.h>
+
+#define MIN_PACKET_SIZE 20
+#define MAX_PACKET_SIZE 1500
+
+struct packet {
+    int length;       // Length of the packet
+    char data[1500];  // Packet data
+};
+
+// Function to process the packet
+void process_packet(struct packet *pkt) {
+    // Validate packet length
+    if (pkt->length < MIN_PACKET_SIZE || pkt->length > MAX_PACKET_SIZE) {
+        // Log an error and discard the packet
+        printf("Error: Packet length %d is invalid. Discarding packet.\n", pkt->length);
+        return;  // Exit the function if the packet is invalid
+    }
+
+    // Further processing of the valid packet
+    printf("Processing packet of length %d...\n", pkt->length);
+    // (Additional processing logic would go here)
+}
+
+// Test the implementation
+int main() {
+    struct packet pkt1 = {25, "Valid packet data"};
+    struct packet pkt2 = {10, "Short packet"};  // Invalid
+    struct packet pkt3 = {2000, "Too long packet"};  // Invalid
+
+    process_packet(&pkt1);  // Should process
+    process_packet(&pkt2);  // Should discard
+    process_packet(&pkt3);  // Should discard
+
+    return 0;
+}
+
  - Port a new package
  - Implement get{host,net,proto,srv}ent and friends.
  - AARCH64 disassembler
